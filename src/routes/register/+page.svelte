@@ -15,11 +15,12 @@
 	<h1 class="text-3xl">Register</h1>
 
 	<div>
-		<label for="email">Email</label>
-		<input class="input" type="email" name="email" id="email" required />
+		<label for="username">Username</label>
+		<input class="input" type="text" name="username" id="username" required />
 		<label for="password">Password</label>
 		<input class="hover:cursor-text input" type="password" name="password" id="password" required />
 		<label for="passwordConfirm">Password Confirm</label>
+
 		<input
 			class="hover:cursor-text input"
 			type="password"
@@ -27,6 +28,8 @@
 			id="passwordConfirm"
 			required
 		/>
+		<label for="email">Email</label>
+		<input class="input" type="email" name="email" id="email" required />
 		<button class="btn">Register</button>
 	</div>
 </form>

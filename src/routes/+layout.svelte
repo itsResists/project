@@ -24,6 +24,9 @@
 						<a href="/profile">Profile</a>
 					</li>
 					<li>
+						<a href="/training">Training</a>
+					</li>
+					<li>
 						<form
 							method="POST"
 							action="/logout"
