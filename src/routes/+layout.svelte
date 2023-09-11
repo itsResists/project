@@ -2,6 +2,9 @@
 	import '../app.postcss';
 	import { currentUser, pb } from '$lib/pocketbase';
 	import { applyAction, enhance } from '$app/forms';
+
+	import "fluent-svelte/theme.css";
+
 </script>
 
 <div class="bg-neutral text-neutral-content">

@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	export let data;
 	export let form;
+	import { Slider } from "fluent-svelte";
 </script>
 
 <body>
@@ -49,25 +50,32 @@
 				<br />
 				________________________________________________________________________
 				<br />
-				Training Cost: -ADD-
+				Training Cost: You will gain 10 stats per 10 energy spent.
 				<br />
 				<span>Current Energy: {data.userData.energy} / {data.userData.maxEnergy}</span>
 			</p>
 		</div>
 		<div class="training">
-			<p>|------------------|----This Will Be A Draggable Bar--------------------|</p>
+		<div class = 'flex'>
+			<span>1</span>
+			<div class='w-full items-center justify-center'>
+				<Slider min={1} max={data.userData.energy} value={250} />
+			</div>
+			 <span>{data.userData.energy}</span>
+		</div>
 		</div>
 		<div class="btnDiv">
 			<form method="post" use:enhance>
+				
 				<button class="btn" formaction="?/offense"> Offense </button>
 				<button class="btn" formaction="?/defense"> Defense </button>
 				<button class="btn" formaction="?/speed">Speed </button>
 				<button class="btn" formaction="?/strength">Strength </button>
 				<button class="btn" formaction="?/willpower">Willpower </button>
-			<div class='btnDiv'>
-				<button class="btn" formaction="?/intelligence">Intelligence </button>
-				<button class="btn" formaction="?/chakra_control">Chakra Control </button>
-			</div>
+				<div class="btnDiv">
+					<button class="btn" formaction="?/intelligence">Intelligence </button>
+					<button class="btn" formaction="?/chakra_control">Chakra Control </button>
+				</div>
 			</form>
 		</div>
 	</div></body
@@ -89,7 +97,6 @@
 	}
 
 	.btnDiv {
-		
 		display: flex;
 		justify-content: center;
 	}
