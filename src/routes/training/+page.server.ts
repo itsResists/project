@@ -2,7 +2,6 @@ import type { Actions } from './$types';
 
 export const load = async ({ locals }) => {
 	const user = locals.user;
-	console.log(locals.user);
 	const userData = await locals.pb.collection('users').getOne(user.id);
 	return {
 		userData
@@ -40,6 +39,7 @@ export const actions: Actions = {
 				const data = {
 					offense: statCap
 				};
+				console.log(1);
 				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
 			} else if (oldData.offense + trainingAmount >= statCap) { //! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
@@ -47,28 +47,34 @@ export const actions: Actions = {
 					offense: statCap,
 					energy: oldEnergy.energy - energyCost
 				};
+				console.log(2);
 				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
-			}
-			if (oldMaxEnergy.energy >= energyCap) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) { //! If the energy result is greater than the energy cap, set the energy to the cap.
 				const data = {
 					offense: oldData.offense + trainingAmount,
 					energy: oldEnergy.energy - energyCost,
-					maxEnergy: energyCap
+					maxEnergy: 1000
 				};
+				console.log(3);
 				await locals.pb.collection('users').update(user?.id, data);
 
-			} else { //! If the energy result is less than the energy cap, set the energy to the result.
+			}
+			else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) { //! If the energy result is greater than the energy cap, set the energy to the cap.
 				const data = {
-					offense: oldData.offense + trainingAmount,
-					energy: oldEnergy.energy - energyCost,
+
 					maxEnergy: oldMaxEnergy.maxEnergy + energyGain
 				};
-
-
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(5);
+				await locals.pb.collection('users').update(user?.id, data);
 			}
-			console.log(oldData);
+			const data = {
+				offense: oldData.offense + trainingAmount,
+				energy: oldEnergy.energy - energyCost,
+			};
+			await locals.pb.collection('users').update(user.id, data);
+			console.log(4);
+			// console.log(oldData);
 		} catch (e) {
 			console.error(e);
 			throw e;
@@ -85,28 +91,46 @@ export const actions: Actions = {
 				return { success: false };
 			}
 
-			if (oldData.defense >= statCap) {
+			if (oldData.defense >= statCap) { //! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					defense: statCap
 				};
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(1);
+				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
-			}
-			if (oldData.defense + trainingAmount >= statCap) {
+			} else if (oldData.defense + trainingAmount >= statCap) { //! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					defense: statCap,
 					energy: oldEnergy.energy - energyCost
 				};
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(2);
+				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
+			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+				const data = {
+					defense: oldData.defense + trainingAmount,
+					energy: oldEnergy.energy - energyCost,
+					maxEnergy: 1000
+				};
+				console.log(3);
+				await locals.pb.collection('users').update(user?.id, data);
+
+			}
+			else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+				const data = {
+
+					maxEnergy: oldMaxEnergy.maxEnergy + energyGain
+				};
+				console.log(5);
+				await locals.pb.collection('users').update(user?.id, data);
 			}
 			const data = {
 				defense: oldData.defense + trainingAmount,
 				energy: oldEnergy.energy - energyCost,
-				maxEnergy: oldMaxEnergy.maxEnergy + energyGain
 			};
 			await locals.pb.collection('users').update(user.id, data);
-			console.log(oldData);
+			console.log(4);
+			// console.log(oldData);
 		} catch (e) {
 			console.error(e);
 			throw e;
@@ -122,28 +146,46 @@ export const actions: Actions = {
 				return { success: false };
 			}
 
-			if (oldData.speed >= statCap) {
+			if (oldData.speed >= statCap) { //! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					speed: statCap
 				};
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(1);
+				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
-			}
-			if (oldData.speed + trainingAmount >= statCap) {
+			} else if (oldData.speed + trainingAmount >= statCap) { //! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					speed: statCap,
 					energy: oldEnergy.energy - energyCost
 				};
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(2);
+				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
+			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+				const data = {
+					speed: oldData.speed + trainingAmount,
+					energy: oldEnergy.energy - energyCost,
+					maxEnergy: 1000
+				};
+				console.log(3);
+				await locals.pb.collection('users').update(user?.id, data);
+
+			}
+			else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+				const data = {
+
+					maxEnergy: oldMaxEnergy.maxEnergy + energyGain
+				};
+				console.log(5);
+				await locals.pb.collection('users').update(user?.id, data);
 			}
 			const data = {
 				speed: oldData.speed + trainingAmount,
 				energy: oldEnergy.energy - energyCost,
-				maxEnergy: oldMaxEnergy.maxEnergy + energyGain
 			};
 			await locals.pb.collection('users').update(user.id, data);
-			console.log(oldData);
+			console.log(4);
+			// console.log(oldData);
 		} catch (e) {
 			console.error(e);
 			throw e;
@@ -159,28 +201,46 @@ export const actions: Actions = {
 				return { success: false };
 			}
 
-			if (oldData.strength >= statCap) {
+			if (oldData.strength >= statCap) { //! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					strength: statCap
 				};
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(1);
+				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
-			}
-			if (oldData.strength + trainingAmount >= statCap) {
+			} else if (oldData.strength + trainingAmount >= statCap) { //! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					strength: statCap,
 					energy: oldEnergy.energy - energyCost
 				};
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(2);
+				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
+			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+				const data = {
+					strength: oldData.strength + trainingAmount,
+					energy: oldEnergy.energy - energyCost,
+					maxEnergy: 1000
+				};
+				console.log(3);
+				await locals.pb.collection('users').update(user?.id, data);
+
+			}
+			else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+				const data = {
+
+					maxEnergy: oldMaxEnergy.maxEnergy + energyGain
+				};
+				console.log(5);
+				await locals.pb.collection('users').update(user?.id, data);
 			}
 			const data = {
 				strength: oldData.strength + trainingAmount,
 				energy: oldEnergy.energy - energyCost,
-				maxEnergy: oldMaxEnergy.maxEnergy + energyGain
 			};
 			await locals.pb.collection('users').update(user.id, data);
-			console.log(oldData);
+			console.log(4);
+			// console.log(oldData);
 		} catch (e) {
 			console.error(e);
 			throw e;
@@ -196,28 +256,46 @@ export const actions: Actions = {
 				return { success: false };
 			}
 
-			if (oldData.willpower >= statCap) {
+			if (oldData.willpower >= statCap) { //! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					willpower: statCap
 				};
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(1);
+				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
-			}
-			if (oldData.willpower + trainingAmount >= statCap) {
+			} else if (oldData.willpower + trainingAmount >= statCap) { //! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					willpower: statCap,
 					energy: oldEnergy.energy - energyCost
 				};
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(2);
+				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
+			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+				const data = {
+					willpower: oldData.willpower + trainingAmount,
+					energy: oldEnergy.energy - energyCost,
+					maxEnergy: 1000
+				};
+				console.log(3);
+				await locals.pb.collection('users').update(user?.id, data);
+
+			}
+			else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+				const data = {
+
+					maxEnergy: oldMaxEnergy.maxEnergy + energyGain
+				};
+				console.log(5);
+				await locals.pb.collection('users').update(user?.id, data);
 			}
 			const data = {
 				willpower: oldData.willpower + trainingAmount,
 				energy: oldEnergy.energy - energyCost,
-				maxEnergy: oldMaxEnergy.maxEnergy + energyGain
 			};
 			await locals.pb.collection('users').update(user.id, data);
-			console.log(oldData);
+			console.log(4);
+			// console.log(oldData);
 		} catch (e) {
 			console.error(e);
 			throw e;
@@ -233,28 +311,46 @@ export const actions: Actions = {
 				return { success: false };
 			}
 
-			if (oldData.intelligence >= statCap) {
+			if (oldData.intelligence >= statCap) { //! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					intelligence: statCap
 				};
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(1);
+				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
-			}
-			if (oldData.intelligence + trainingAmount >= statCap) {
+			} else if (oldData.intelligence + trainingAmount >= statCap) { //! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					intelligence: statCap,
 					energy: oldEnergy.energy - energyCost
 				};
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(2);
+				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
+			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+				const data = {
+					intelligence: oldData.intelligence + trainingAmount,
+					energy: oldEnergy.energy - energyCost,
+					maxEnergy: 1000
+				};
+				console.log(3);
+				await locals.pb.collection('users').update(user?.id, data);
+
+			}
+			else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+				const data = {
+
+					maxEnergy: oldMaxEnergy.maxEnergy + energyGain
+				};
+				console.log(5);
+				await locals.pb.collection('users').update(user?.id, data);
 			}
 			const data = {
 				intelligence: oldData.intelligence + trainingAmount,
 				energy: oldEnergy.energy - energyCost,
-				maxEnergy: oldMaxEnergy.maxEnergy + energyGain
 			};
 			await locals.pb.collection('users').update(user.id, data);
-			console.log(oldData);
+			console.log(4);
+			// console.log(oldData);
 		} catch (e) {
 			console.error(e);
 			throw e;
@@ -270,31 +366,49 @@ export const actions: Actions = {
 				return { success: false };
 			}
 
-			if (oldData.chakra_control >= statCap) {
+			if (oldData.chakra_control >= statCap) { //! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					chakra_control: statCap
 				};
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(1);
+				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
-			}
-			if (oldData.chakra_control + trainingAmount >= statCap) {
+			} else if (oldData.chakra_control + trainingAmount >= statCap) { //! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					chakra_control: statCap,
 					energy: oldEnergy.energy - energyCost
 				};
-				await locals.pb.collection('users').update(user.id, data);
+				console.log(2);
+				await locals.pb.collection('users').update(user?.id, data);
 				return { success: true };
+			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+				const data = {
+					chakra_control: oldData.chakra_control + trainingAmount,
+					energy: oldEnergy.energy - energyCost,
+					maxEnergy: 1000
+				};
+				console.log(3);
+				await locals.pb.collection('users').update(user?.id, data);
+
+			}
+			else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) { //! If the energy result is greater than the energy cap, set the energy to the cap.
+				const data = {
+
+					maxEnergy: oldMaxEnergy.maxEnergy + energyGain
+				};
+				console.log(5);
+				await locals.pb.collection('users').update(user?.id, data);
 			}
 			const data = {
 				chakra_control: oldData.chakra_control + trainingAmount,
 				energy: oldEnergy.energy - energyCost,
-				maxEnergy: oldMaxEnergy.maxEnergy + energyGain
 			};
 			await locals.pb.collection('users').update(user.id, data);
-			console.log(oldData);
+			console.log(4);
+			// console.log(oldData);
 		} catch (e) {
 			console.error(e);
 			throw e;
 		}
-	}
+	},
 };
