@@ -3,6 +3,9 @@
 	export let data;
 	export let form;
 	import { Slider } from "fluent-svelte";
+	import { page } from '$app/stores';
+	let value = 1;
+
 </script>
 
 <body>
@@ -33,14 +36,18 @@
 		</div>
 	</div>
 
-	{#if form?.success === false}
+	{#if form?.noEnergy === true}
 		<!-- this message is ephemeral; it exists because the page was rendered in
            response to a form submission. it will vanish if the user reloads -->
 		<p class="text-red-600 text-lg font-semibold">
 			You do not have enough energy to train! Please return later.
 		</p>
-	{:else if form?.success === true}
+	{:else if form?.statCap === true}
 		<p class="text-green-600 text-lg font-semibold">You are at cap!</p>
+		{:else if form?.success === true}
+		<p class="text-green-600 text-lg font-semibold">You have gained X stat and X energy </p>
+		{:else if form?.success === false}
+		<p class="text-green-600 text-lg font-semibold">You have gained X stat </p>
 	{/if}
 	<div>
 		<div class="training">
@@ -50,35 +57,45 @@
 				<br />
 				________________________________________________________________________
 				<br />
-				Training Cost: You will gain 10 stats per 10 energy spent.
+				 You will gain 10 stats per energy spent.
 				<br />
 				<span>Current Energy: {data.userData.energy} / {data.userData.maxEnergy}</span>
 			</p>
 		</div>
-		<div class="training">
-		<div class = 'flex'>
-			<span>1</span>
-			<div class='w-full items-center justify-center'>
-				<Slider min={1} max={data.userData.energy} value={250} />
-			</div>
-			 <span>{data.userData.energy}</span>
-		</div>
-		</div>
+
 		<div class="btnDiv">
 			<form method="post" use:enhance>
+				<div class="training">
+					<div>
+						Adjust the slider below to choose how much energy you want to spend.
+					</div>
+					<br>
+					<div class = 'flex'>
+					
+						<span>1</span>
+						<div class='w-full items-center justify-center'>
+							<Slider bind:value min={1} max={data.userData.energy} id='energySpent'name='energySpent' />
+						</div>
+						 <span>{data.userData.energy}</span>
+					</div>
+					<div class='flex items-center justify-center'>
+						{value} Energy
+					</div>
+					</div>
 				
-				<button class="btn" formaction="?/offense"> Offense </button>
-				<button class="btn" formaction="?/defense"> Defense </button>
-				<button class="btn" formaction="?/speed">Speed </button>
-				<button class="btn" formaction="?/strength">Strength </button>
-				<button class="btn" formaction="?/willpower">Willpower </button>
+				<button name='energySpent' value={value} class="btn"   formaction="?/offense"> Offense </button>
+				<button name='energySpent' value={value} class="btn" formaction="?/defense"> Defense </button>
+				<button name='energySpent' value={value} class="btn" formaction="?/speed">Speed </button>
+				<button name='energySpent' value={value} class="btn" formaction="?/strength">Strength </button>
+				<button name='energySpent' value={value} class="btn" formaction="?/willpower">Willpower </button>
 				<div class="btnDiv">
-					<button class="btn" formaction="?/intelligence">Intelligence </button>
-					<button class="btn" formaction="?/chakra_control">Chakra Control </button>
+					<button class="btn" name='energySpent' value={value} formaction="?/intelligence">Intelligence </button>
+					<button class="btn"  name='energySpent' value={value} formaction="?/chakra_control">Chakra Control </button>
 				</div>
 			</form>
 		</div>
-	</div></body
+	</div>
+	</body
 >
 
 <style>

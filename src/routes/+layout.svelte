@@ -2,10 +2,11 @@
 	import '../app.postcss';
 	import { currentUser, pb } from '$lib/pocketbase';
 	import { applyAction, enhance } from '$app/forms';
-
 	import "fluent-svelte/theme.css";
 
 </script>
+
+
 
 <div class="bg-neutral text-neutral-content">
 	<div class="max-w-xl mx-auto navbar">
@@ -20,6 +21,7 @@
 							<p>
 								Welcome back,
 								{$currentUser.username}!
+								
 							</p>
 						</div>
 					</li>
