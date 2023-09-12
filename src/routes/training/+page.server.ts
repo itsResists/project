@@ -2,16 +2,14 @@ import type { Actions } from './$types';
 
 export const load = async ({ locals }) => {
 	const user = locals.user;
-	const userData = await locals.pb.collection('users').getOne(user.id);
+	const userData = await locals.pb.collection('users').getOne(user?.id);
+
 	return {
 		userData
 	};
 };
 
-
-let rank = 3;
-
-const statCap = Math.pow(rank + 1, 2) * 10000; //! Make stat cap variable based on current Rank.
+//! Make stat cap variable based on current Rank.
 
 // const energyCap = Math.pow((rank+1), 2) * 10
 const energyCap = 1000;
@@ -20,24 +18,37 @@ export const actions: Actions = {
 	offense: async ({ locals, request }) => {
 		try {
 			const user = locals.user;
+			const rank = user?.rank;
+			const statCap = Math.pow(rank + 1, 2) * 10000;
 
+			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
 				energySpent: number;
 			};
-			const energySpent2 = (energyData.energySpent)
-			const trainingAmount = energySpent2 as unknown as number * 10
-			const energyGain = trainingAmount * 0.01;
-			const oldData = await locals.pb.collection('users').getOne(user.id, { fields: ['offense'] });
-			const oldEnergy = await locals.pb.collection('users').getOne(user.id, { fields: ['energy'] });
+			const energySpent2 = energyData.energySpent;
+			const trainingAmount = (energySpent2 as unknown as number) * 1;
+			const energyGain = trainingAmount * 0.05;
+
+			//! Experience Gain
+			const oldExperience = await locals.pb
+				.collection('users')
+				.getOne(user?.id, { fields: 'experience' });
+			const experienceGain = trainingAmount * 10;
+			const newExperience = oldExperience.experience + experienceGain;
+
+			//! Training Checks
+			const oldData = await locals.pb.collection('users').getOne(user?.id, { fields: 'offense' });
+			const oldEnergy = await locals.pb.collection('users').getOne(user?.id, { fields: 'energy' });
 			const oldMaxEnergy = await locals.pb
 				.collection('users')
-				.getOne(user.id, { fields: ['maxEnergy'] });
+				.getOne(user?.id, { fields: 'maxEnergy' });
+
 			if (oldEnergy.energy < 1) {
 				return { noEnergy: true };
 			}
 
 			if (oldData.offense >= statCap) {
-			//! If the stat is already at the cap, set the stat to the cap and dont take energy.
+				//! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					offense: statCap
 				};
@@ -47,16 +58,17 @@ export const actions: Actions = {
 				//! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					offense: statCap,
-					energy: oldEnergy.energy - energySpent2
+					energy: oldEnergy.energy - energySpent2,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-
 			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) {
 				//! If the energy result is greater than the energy cap, set the energy to the cap.
 				const data = {
 					offense: oldData.offense + trainingAmount,
 					energy: oldEnergy.energy - energySpent2,
-					maxEnergy: 1000
+					maxEnergy: 1000,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
 				return { success: false };
@@ -69,13 +81,14 @@ export const actions: Actions = {
 			}
 			const data = {
 				offense: oldData.offense + trainingAmount,
-				energy: oldEnergy.energy - energySpent2
+				energy: oldEnergy.energy - energySpent2,
+				experience: newExperience
 			};
-			await locals.pb.collection('users').update(user.id, data);
-			return { success: true };
+			await locals.pb.collection('users').update(user?.id, data);
+			return { success: true, results: energySpent2 };
 			// console.log(oldData);
-			console.log(energyData)
-			console.log(energyGain)
+			console.log(energyData);
+			console.log(energyGain);
 		} catch (e) {
 			console.error(e);
 			throw e;
@@ -84,24 +97,36 @@ export const actions: Actions = {
 	defense: async ({ locals, request }) => {
 		try {
 			const user = locals.user;
+			const rank = user?.rank;
+			const statCap = Math.pow(rank + 1, 2) * 10000;
 
+			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
 				energySpent: number;
 			};
-			const energySpent2 = (energyData.energySpent)
-			const trainingAmount = energySpent2 as unknown as number * 10
-			const energyGain = trainingAmount * 0.01;
-			const oldData = await locals.pb.collection('users').getOne(user.id, { fields: ['defense'] });
-			const oldEnergy = await locals.pb.collection('users').getOne(user.id, { fields: ['energy'] });
+			const energySpent2 = energyData.energySpent;
+			const trainingAmount = (energySpent2 as unknown as number) * 1;
+			const energyGain = trainingAmount * 0.05;
+
+			//! Experience Gain
+			const oldExperience = await locals.pb
+				.collection('users')
+				.getOne(user?.id, { fields: 'experience' });
+			const experienceGain = trainingAmount * 10;
+			const newExperience = oldExperience.experience + experienceGain;
+
+			//! Training Checks
+			const oldData = await locals.pb.collection('users').getOne(user?.id, { fields: 'defense' });
+			const oldEnergy = await locals.pb.collection('users').getOne(user?.id, { fields: 'energy' });
 			const oldMaxEnergy = await locals.pb
 				.collection('users')
-				.getOne(user.id, { fields: ['maxEnergy'] });
+				.getOne(user?.id, { fields: 'maxEnergy' });
 			if (oldEnergy.energy < 1) {
 				return { noEnergy: true };
 			}
 
 			if (oldData.defense >= statCap) {
-			//! If the stat is already at the cap, set the stat to the cap and dont take energy.
+				//! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					defense: statCap
 				};
@@ -111,16 +136,17 @@ export const actions: Actions = {
 				//! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					defense: statCap,
-					energy: oldEnergy.energy - energySpent2
+					energy: oldEnergy.energy - energySpent2,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-
 			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) {
 				//! If the energy result is greater than the energy cap, set the energy to the cap.
 				const data = {
 					defense: oldData.defense + trainingAmount,
 					energy: oldEnergy.energy - energySpent2,
-					maxEnergy: 1000
+					maxEnergy: 1000,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
 				return { success: false };
@@ -133,13 +159,17 @@ export const actions: Actions = {
 			}
 			const data = {
 				defense: oldData.defense + trainingAmount,
-				energy: oldEnergy.energy - energySpent2
+				energy: oldEnergy.energy - energySpent2,
+				experience: newExperience
 			};
-			await locals.pb.collection('users').update(user.id, data);
-			return { success: true };
+			await locals.pb.collection('users').update(user?.id, data);
+			return {
+				success: true,
+				results: energySpent2
+			};
 			// console.log(oldData);
-			console.log(energyData)
-			console.log(energyGain)
+			console.log(energyData);
+			console.log(energyGain);
 		} catch (e) {
 			console.error(e);
 			throw e;
@@ -148,24 +178,36 @@ export const actions: Actions = {
 	speed: async ({ locals, request }) => {
 		try {
 			const user = locals.user;
+			const rank = user?.rank;
+			const statCap = Math.pow(rank + 1, 2) * 10000;
 
+			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
 				energySpent: number;
 			};
-			const energySpent2 = (energyData.energySpent)
-			const trainingAmount = energySpent2 as unknown as number * 10
-			const energyGain = trainingAmount * 0.01;
-			const oldData = await locals.pb.collection('users').getOne(user.id, { fields: ['speed'] });
-			const oldEnergy = await locals.pb.collection('users').getOne(user.id, { fields: ['energy'] });
+			const energySpent2 = energyData.energySpent;
+			const trainingAmount = (energySpent2 as unknown as number) * 1;
+			const energyGain = trainingAmount * 0.05;
+
+			//! Experience Gain
+			const oldExperience = await locals.pb
+				.collection('users')
+				.getOne(user?.id, { fields: 'experience' });
+			const experienceGain = trainingAmount * 10;
+			const newExperience = oldExperience.experience + experienceGain;
+
+			//! Training Checks
+			const oldData = await locals.pb.collection('users').getOne(user?.id, { fields: 'speed' });
+			const oldEnergy = await locals.pb.collection('users').getOne(user?.id, { fields: 'energy' });
 			const oldMaxEnergy = await locals.pb
 				.collection('users')
-				.getOne(user.id, { fields: ['maxEnergy'] });
+				.getOne(user?.id, { fields: 'maxEnergy' });
 			if (oldEnergy.energy < 1) {
 				return { noEnergy: true };
 			}
 
 			if (oldData.speed >= statCap) {
-			//! If the stat is already at the cap, set the stat to the cap and dont take energy.
+				//! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					speed: statCap
 				};
@@ -175,16 +217,17 @@ export const actions: Actions = {
 				//! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					speed: statCap,
-					energy: oldEnergy.energy - energySpent2
+					energy: oldEnergy.energy - energySpent2,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-
 			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) {
 				//! If the energy result is greater than the energy cap, set the energy to the cap.
 				const data = {
 					speed: oldData.speed + trainingAmount,
 					energy: oldEnergy.energy - energySpent2,
-					maxEnergy: 1000
+					maxEnergy: 1000,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
 				return { success: false };
@@ -197,39 +240,52 @@ export const actions: Actions = {
 			}
 			const data = {
 				speed: oldData.speed + trainingAmount,
-				energy: oldEnergy.energy - energySpent2
+				energy: oldEnergy.energy - energySpent2,
+				experience: newExperience
 			};
-			await locals.pb.collection('users').update(user.id, data);
-			return { success: true };
-			// console.log(oldData);
-			console.log(energyData)
-			console.log(energyGain)
+			await locals.pb.collection('users').update(user?.id, data);
+			return {
+				success: true,
+				results: energySpent2
+			};
 		} catch (e) {
 			console.error(e);
 			throw e;
 		}
-	},	
+	},
 	strength: async ({ locals, request }) => {
 		try {
 			const user = locals.user;
+			const rank = user?.rank;
+			const statCap = Math.pow(rank + 1, 2) * 10000;
 
+			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
 				energySpent: number;
 			};
-			const energySpent2 = (energyData.energySpent)
-			const trainingAmount = energySpent2 as unknown as number * 10
-			const energyGain = trainingAmount * 0.01;
-			const oldData = await locals.pb.collection('users').getOne(user.id, { fields: ['strength'] });
-			const oldEnergy = await locals.pb.collection('users').getOne(user.id, { fields: ['energy'] });
+			const energySpent2 = energyData.energySpent;
+			const trainingAmount = (energySpent2 as unknown as number) * 1;
+			const energyGain = trainingAmount * 0.05;
+
+			//! Experience Gain
+			const oldExperience = await locals.pb
+				.collection('users')
+				.getOne(user?.id, { fields: 'experience' });
+			const experienceGain = trainingAmount * 10;
+			const newExperience = oldExperience.experience + experienceGain;
+
+			//! Training Checks
+			const oldData = await locals.pb.collection('users').getOne(user?.id, { fields: 'strength' });
+			const oldEnergy = await locals.pb.collection('users').getOne(user?.id, { fields: 'energy' });
 			const oldMaxEnergy = await locals.pb
 				.collection('users')
-				.getOne(user.id, { fields: ['maxEnergy'] });
+				.getOne(user?.id, { fields: 'maxEnergy' });
 			if (oldEnergy.energy < 1) {
 				return { noEnergy: true };
 			}
 
 			if (oldData.strength >= statCap) {
-			//! If the stat is already at the cap, set the stat to the cap and dont take energy.
+				//! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					strength: statCap
 				};
@@ -239,16 +295,17 @@ export const actions: Actions = {
 				//! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					strength: statCap,
-					energy: oldEnergy.energy - energySpent2
+					energy: oldEnergy.energy - energySpent2,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-
 			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) {
 				//! If the energy result is greater than the energy cap, set the energy to the cap.
 				const data = {
 					strength: oldData.strength + trainingAmount,
 					energy: oldEnergy.energy - energySpent2,
-					maxEnergy: 1000
+					maxEnergy: 1000,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
 				return { success: false };
@@ -261,13 +318,14 @@ export const actions: Actions = {
 			}
 			const data = {
 				strength: oldData.strength + trainingAmount,
-				energy: oldEnergy.energy - energySpent2
+				energy: oldEnergy.energy - energySpent2,
+				experience: newExperience
 			};
-			await locals.pb.collection('users').update(user.id, data);
-			return { success: true };
-			// console.log(oldData);
-			console.log(energyData)
-			console.log(energyGain)
+			await locals.pb.collection('users').update(user?.id, data);
+			return {
+				success: true,
+				results: energySpent2
+			};
 		} catch (e) {
 			console.error(e);
 			throw e;
@@ -276,24 +334,36 @@ export const actions: Actions = {
 	willpower: async ({ locals, request }) => {
 		try {
 			const user = locals.user;
+			const rank = user?.rank;
+			const statCap = Math.pow(rank + 1, 2) * 10000;
 
+			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
 				energySpent: number;
 			};
-			const energySpent2 = (energyData.energySpent)
-			const trainingAmount = energySpent2 as unknown as number * 10
-			const energyGain = trainingAmount * 0.01;
-			const oldData = await locals.pb.collection('users').getOne(user.id, { fields: ['willpower'] });
-			const oldEnergy = await locals.pb.collection('users').getOne(user.id, { fields: ['energy'] });
+			const energySpent2 = energyData.energySpent;
+			const trainingAmount = (energySpent2 as unknown as number) * 1;
+			const energyGain = trainingAmount * 0.05;
+
+			//! Experience Gain
+			const oldExperience = await locals.pb
+				.collection('users')
+				.getOne(user?.id, { fields: 'experience' });
+			const experienceGain = trainingAmount * 10;
+			const newExperience = oldExperience.experience + experienceGain;
+
+			//! Training Checks
+			const oldData = await locals.pb.collection('users').getOne(user?.id, { fields: 'willpower' });
+			const oldEnergy = await locals.pb.collection('users').getOne(user?.id, { fields: 'energy' });
 			const oldMaxEnergy = await locals.pb
 				.collection('users')
-				.getOne(user.id, { fields: ['maxEnergy'] });
+				.getOne(user?.id, { fields: 'maxEnergy' });
 			if (oldEnergy.energy < 1) {
 				return { noEnergy: true };
 			}
 
 			if (oldData.willpower >= statCap) {
-			//! If the stat is already at the cap, set the stat to the cap and dont take energy.
+				//! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					willpower: statCap
 				};
@@ -303,16 +373,17 @@ export const actions: Actions = {
 				//! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					willpower: statCap,
-					energy: oldEnergy.energy - energySpent2
+					energy: oldEnergy.energy - energySpent2,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-
 			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) {
 				//! If the energy result is greater than the energy cap, set the energy to the cap.
 				const data = {
 					willpower: oldData.willpower + trainingAmount,
 					energy: oldEnergy.energy - energySpent2,
-					maxEnergy: 1000
+					maxEnergy: 1000,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
 				return { success: false };
@@ -325,39 +396,54 @@ export const actions: Actions = {
 			}
 			const data = {
 				willpower: oldData.willpower + trainingAmount,
-				energy: oldEnergy.energy - energySpent2
+				energy: oldEnergy.energy - energySpent2,
+				experience: newExperience
 			};
-			await locals.pb.collection('users').update(user.id, data);
-			return { success: true };
-			// console.log(oldData);
-			console.log(energyData)
-			console.log(energyGain)
+			await locals.pb.collection('users').update(user?.id, data);
+			return {
+				success: true,
+				results: energySpent2
+			};
 		} catch (e) {
 			console.error(e);
 			throw e;
 		}
-	},	
+	},
 	intelligence: async ({ locals, request }) => {
 		try {
 			const user = locals.user;
+			const rank = user?.rank;
+			const statCap = Math.pow(rank + 1, 2) * 10000;
 
+			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
 				energySpent: number;
 			};
-			const energySpent2 = (energyData.energySpent)
-			const trainingAmount = energySpent2 as unknown as number * 10
-			const energyGain = trainingAmount * 0.01;
-			const oldData = await locals.pb.collection('users').getOne(user.id, { fields: ['intelligence'] });
-			const oldEnergy = await locals.pb.collection('users').getOne(user.id, { fields: ['energy'] });
+			const energySpent2 = energyData.energySpent;
+			const trainingAmount = (energySpent2 as unknown as number) * 1;
+			const energyGain = trainingAmount * 0.05;
+
+			//! Experience Gain
+			const oldExperience = await locals.pb
+				.collection('users')
+				.getOne(user?.id, { fields: 'experience' });
+			const experienceGain = trainingAmount * 10;
+			const newExperience = oldExperience.experience + experienceGain;
+
+			//! Training Checks
+			const oldData = await locals.pb
+				.collection('users')
+				.getOne(user?.id, { fields: 'intelligence' });
+			const oldEnergy = await locals.pb.collection('users').getOne(user?.id, { fields: 'energy' });
 			const oldMaxEnergy = await locals.pb
 				.collection('users')
-				.getOne(user.id, { fields: ['maxEnergy'] });
+				.getOne(user?.id, { fields: 'maxEnergy' });
 			if (oldEnergy.energy < 1) {
 				return { noEnergy: true };
 			}
 
 			if (oldData.intelligence >= statCap) {
-			//! If the stat is already at the cap, set the stat to the cap and dont take energy.
+				//! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					intelligence: statCap
 				};
@@ -367,16 +453,17 @@ export const actions: Actions = {
 				//! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					intelligence: statCap,
-					energy: oldEnergy.energy - energySpent2
+					energy: oldEnergy.energy - energySpent2,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-
 			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) {
 				//! If the energy result is greater than the energy cap, set the energy to the cap.
 				const data = {
 					intelligence: oldData.intelligence + trainingAmount,
 					energy: oldEnergy.energy - energySpent2,
-					maxEnergy: 1000
+					maxEnergy: 1000,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
 				return { success: false };
@@ -389,13 +476,17 @@ export const actions: Actions = {
 			}
 			const data = {
 				intelligence: oldData.intelligence + trainingAmount,
-				energy: oldEnergy.energy - energySpent2
+				energy: oldEnergy.energy - energySpent2,
+				experience: newExperience
 			};
-			await locals.pb.collection('users').update(user.id, data);
-			return { success: true };
+			await locals.pb.collection('users').update(user?.id, data);
+			return {
+				success: true,
+				results: energySpent2
+			};
 			// console.log(oldData);
-			console.log(energyData)
-			console.log(energyGain)
+			console.log(energyData);
+			console.log(energyGain);
 		} catch (e) {
 			console.error(e);
 			throw e;
@@ -404,24 +495,38 @@ export const actions: Actions = {
 	chakra_control: async ({ locals, request }) => {
 		try {
 			const user = locals.user;
+			const rank = user?.rank;
+			const statCap = Math.pow(rank + 1, 2) * 10000;
 
+			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
 				energySpent: number;
 			};
-			const energySpent2 = (energyData.energySpent)
-			const trainingAmount = energySpent2 as unknown as number * 10
-			const energyGain = trainingAmount * 0.01;
-			const oldData = await locals.pb.collection('users').getOne(user.id, { fields: ['chakra_control'] });
-			const oldEnergy = await locals.pb.collection('users').getOne(user.id, { fields: ['energy'] });
+			const energySpent2 = energyData.energySpent;
+			const trainingAmount = (energySpent2 as unknown as number) * 1;
+			const energyGain = trainingAmount * 0.05;
+
+			//! Experience Gain
+			const oldExperience = await locals.pb
+				.collection('users')
+				.getOne(user?.id, { fields: 'experience' });
+			const experienceGain = trainingAmount * 10;
+			const newExperience = oldExperience.experience + experienceGain;
+
+			//! Training Checks
+			const oldData = await locals.pb
+				.collection('users')
+				.getOne(user?.id, { fields: 'chakra_control' });
+			const oldEnergy = await locals.pb.collection('users').getOne(user?.id, { fields: 'energy' });
 			const oldMaxEnergy = await locals.pb
 				.collection('users')
-				.getOne(user.id, { fields: ['maxEnergy'] });
+				.getOne(user?.id, { fields: 'maxEnergy' });
 			if (oldEnergy.energy < 1) {
 				return { noEnergy: true };
 			}
 
 			if (oldData.chakra_control >= statCap) {
-			//! If the stat is already at the cap, set the stat to the cap and dont take energy.
+				//! If the stat is already at the cap, set the stat to the cap and dont take energy.
 				const data = {
 					chakra_control: statCap
 				};
@@ -431,16 +536,17 @@ export const actions: Actions = {
 				//! If the training result is greater than the stat cap, set the stat to the cap but still take energy.
 				const data = {
 					chakra_control: statCap,
-					energy: oldEnergy.energy - energySpent2
+					energy: oldEnergy.energy - energySpent2,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-
 			} else if (oldMaxEnergy.maxEnergy + energyGain >= 1000) {
 				//! If the energy result is greater than the energy cap, set the energy to the cap.
 				const data = {
 					chakra_control: oldData.chakra_control + trainingAmount,
 					energy: oldEnergy.energy - energySpent2,
-					maxEnergy: 1000
+					maxEnergy: 1000,
+					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
 				return { success: false };
@@ -453,16 +559,17 @@ export const actions: Actions = {
 			}
 			const data = {
 				chakra_control: oldData.chakra_control + trainingAmount,
-				energy: oldEnergy.energy - energySpent2
+				energy: oldEnergy.energy - energySpent2,
+				experience: newExperience
 			};
-			await locals.pb.collection('users').update(user.id, data);
-			return { success: true };
-			// console.log(oldData);
-			console.log(energyData)
-			console.log(energyGain)
+			await locals.pb.collection('users').update(user?.id, data);
+			return {
+				success: true,
+				results: energySpent2
+			};
 		} catch (e) {
 			console.error(e);
 			throw e;
 		}
-	},
+	}
 };

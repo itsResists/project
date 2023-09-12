@@ -2,10 +2,8 @@
 	import { enhance } from '$app/forms';
 	export let data;
 	export let form;
-	import { Slider } from "fluent-svelte";
-	import { page } from '$app/stores';
+	import { Slider } from 'fluent-svelte';
 	let value = 1;
-
 </script>
 
 <body>
@@ -34,20 +32,24 @@
 		<div>
 			Chakra Control: {data.userData.chakra_control}
 		</div>
+		<div>
+			Experience: {data.userData.experience}
+		</div>
 	</div>
 
 	{#if form?.noEnergy === true}
-		<!-- this message is ephemeral; it exists because the page was rendered in
-           response to a form submission. it will vanish if the user reloads -->
 		<p class="text-red-600 text-lg font-semibold">
 			You do not have enough energy to train! Please return later.
 		</p>
 	{:else if form?.statCap === true}
 		<p class="text-green-600 text-lg font-semibold">You are at cap!</p>
-		{:else if form?.success === true}
-		<p class="text-green-600 text-lg font-semibold">You have gained X stat and X energy </p>
-		{:else if form?.success === false}
-		<p class="text-green-600 text-lg font-semibold">You have gained X stat </p>
+	{:else if form?.success === true}
+		<p class="text-green-600 text-lg font-semibold">
+			You have gained {form?.results} in the corresponding stat, {form?.results * 10} experience and
+			{form?.results * 0.05} total energy
+		</p>
+	{:else if form?.success === false}
+		<p class="text-green-600 text-lg font-semibold">You have gained {form?.results * 10} stat</p>
 	{/if}
 	<div>
 		<div class="training">
@@ -57,7 +59,8 @@
 				<br />
 				________________________________________________________________________
 				<br />
-				 You will gain 10 stats per energy spent.
+				<br />
+				You will gain 1 stat per energy spent.
 				<br />
 				<span>Current Energy: {data.userData.energy} / {data.userData.maxEnergy}</span>
 			</p>
@@ -66,37 +69,43 @@
 		<div class="btnDiv">
 			<form method="post" use:enhance>
 				<div class="training">
-					<div>
-						Adjust the slider below to choose how much energy you want to spend.
-					</div>
-					<br>
-					<div class = 'flex'>
-					
+					<div>Adjust the slider below to choose how much energy you want to spend.</div>
+					<br />
+					<div class="flex">
 						<span>1</span>
-						<div class='w-full items-center justify-center'>
-							<Slider bind:value min={1} max={data.userData.energy} id='energySpent'name='energySpent' />
+						<div class="w-full items-center justify-center">
+							<Slider
+								bind:value
+								min={1}
+								max={data.userData.energy}
+								id="energySpent"
+								name="energySpent"
+							/>
 						</div>
-						 <span>{data.userData.energy}</span>
+						<span>{data.userData.energy}</span>
 					</div>
-					<div class='flex items-center justify-center'>
+					<div class="flex items-center justify-center">
 						{value} Energy
 					</div>
-					</div>
-				
-				<button name='energySpent' value={value} class="btn"   formaction="?/offense"> Offense </button>
-				<button name='energySpent' value={value} class="btn" formaction="?/defense"> Defense </button>
-				<button name='energySpent' value={value} class="btn" formaction="?/speed">Speed </button>
-				<button name='energySpent' value={value} class="btn" formaction="?/strength">Strength </button>
-				<button name='energySpent' value={value} class="btn" formaction="?/willpower">Willpower </button>
+				</div>
+
+				<button name="energySpent" {value} class="btn" formaction="?/offense"> Offense </button>
+				<button name="energySpent" {value} class="btn" formaction="?/defense"> Defense </button>
+				<button name="energySpent" {value} class="btn" formaction="?/speed">Speed </button>
+				<button name="energySpent" {value} class="btn" formaction="?/strength">Strength </button>
+				<button name="energySpent" {value} class="btn" formaction="?/willpower">Willpower </button>
 				<div class="btnDiv">
-					<button class="btn" name='energySpent' value={value} formaction="?/intelligence">Intelligence </button>
-					<button class="btn"  name='energySpent' value={value} formaction="?/chakra_control">Chakra Control </button>
+					<button class="btn" name="energySpent" {value} formaction="?/intelligence"
+						>Intelligence
+					</button>
+					<button class="btn" name="energySpent" {value} formaction="?/chakra_control"
+						>Chakra Control
+					</button>
 				</div>
 			</form>
 		</div>
 	</div>
-	</body
->
+</body>
 
 <style>
 	.training {

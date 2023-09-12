@@ -47,9 +47,8 @@
 	Stat7: {data.userData.chakra_control}
 </div>
 
-
 <div>
 	<p>Level: {data.userData.level}</p>
 	<p>Experience: {data.userData.experience}</p>
-	<p>Next Level: {data.userData.nextLevel}</p>
+	<p>Next Level:</p>
 </div>
