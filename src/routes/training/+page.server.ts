@@ -86,9 +86,6 @@ export const actions: Actions = {
 			};
 			await locals.pb.collection('users').update(user?.id, data);
 			return { success: true, results: energySpent2 };
-			// console.log(oldData);
-			console.log(energyData);
-			console.log(energyGain);
 		} catch (e) {
 			console.error(e);
 			throw e;
@@ -167,9 +164,6 @@ export const actions: Actions = {
 				success: true,
 				results: energySpent2
 			};
-			// console.log(oldData);
-			console.log(energyData);
-			console.log(energyGain);
 		} catch (e) {
 			console.error(e);
 			throw e;
@@ -484,9 +478,6 @@ export const actions: Actions = {
 				success: true,
 				results: energySpent2
 			};
-			// console.log(oldData);
-			console.log(energyData);
-			console.log(energyGain);
 		} catch (e) {
 			console.error(e);
 			throw e;
