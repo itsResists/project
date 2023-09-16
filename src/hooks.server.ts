@@ -1,7 +1,6 @@
 import type { Handle } from '@sveltejs/kit';
 import { pb } from './lib/pocketbase';
 
-
 // const users = await pb.collection("users").getFullList();
 // setInterval(function () {
 // 	console.log(users)
@@ -39,6 +38,3 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	return response;
 };
-
-
-
