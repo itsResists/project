@@ -3,7 +3,7 @@
 	import { applyAction, enhance } from '$app/forms';
 	export let data;
 
-	import { profileStore } from '../../stores/ModalStore';
+	import { profileStore } from '../../stores/stores';
 </script>
 
 {#if $currentUser}

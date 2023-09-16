@@ -1,5 +1,5 @@
 <script>
-	import { profileStore } from '../../stores/ModalStore';
+	import { profileStore } from '../../stores/stores';
 </script>
 
 <main>

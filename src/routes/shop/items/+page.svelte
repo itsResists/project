@@ -1,3 +1,7 @@
+<script>
+	import ShopForm from '../../../components/ShopForm.svelte';
+</script>
+
 <body>
 	<h1>Item Shop</h1>
 
@@ -11,7 +15,9 @@
 
 		<div class="grid grid-cols-4 border">
 			<div>
-				<button class="btn p-2 m-4 h-12 w-28 flex justify-center">Item 1</button>
+				<!-- <button class="btn p-2 m-4 h-12 w-28 flex justify-center">Item 1</button>
+				 -->
+				<ShopForm />
 			</div>
 		</div>
 	</div></body

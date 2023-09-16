@@ -1,5 +1,10 @@
 <script>
-	import { isModalOpen } from '../../stores/ModalStore';
+	import { isModalOpen } from '../../stores/stores';
+	import { enhance } from '$app/forms';
+	export let data;
+	export let form;
+
+	let jutsus = data.info;
 </script>
 
 <body>
@@ -14,6 +19,22 @@
 		</div>
 		<div class="grid grid-cols-4 border">
 			<div>
+				{#each jutsus as jutsu}
+					<form method="post" use:enhance>
+						<button
+							name={jutsu?.name}
+							value={jutsu?.jutsuID}
+							class="btn p-4 m-1"
+							formaction="?/jutsu"
+						>
+							{jutsu?.name.replace(/_/, ' ')}
+							{jutsu?.type}
+						</button>
+					</form>
+				{/each}
+			</div>
+
+			<!-- <div>
 				{$isModalOpen}
 				<button
 					class="btn p-2 m-4 h-12 w-28 flex justify-center"
@@ -21,7 +42,7 @@
 						isModalOpen.set(true);
 					}}>Jutsu 1</button
 				>
-			</div>
+			</div> -->
 		</div>
-	</div></body
->
+	</div>
+</body>

@@ -1,6 +1,6 @@
 <script>
 	import Modal from '../../components/Modal.svelte';
-	import { isModalOpen } from '../../stores/ModalStore';
+	import { isModalOpen } from '../../stores/stores';
 </script>
 
 <body>

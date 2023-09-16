@@ -50,7 +50,9 @@
 			{form?.results * 0.1} total energy
 		</p>
 	{:else if form?.success === false}
-		<p class="text-green-600 text-lg font-semibold">You have gained {form?.results * 0.5} stat</p>
+		<p class="text-green-600 text-lg font-semibold">
+			You have gained {form?.results * 0.5} stat and {form?.results * 5} experience
+		</p>
 	{/if}
 	<div>
 		<div class="training">

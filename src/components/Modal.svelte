@@ -1,13 +1,21 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { isModalOpen } from '../stores/ModalStore';
+	import { isModalOpen } from '../stores/stores';
+	export function saveForm() {
+		alert('Form saved! Name: ' + value);
+		console.log(value);
+	}
+
+	let value = '';
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
 	class="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-10"
 	on:click={() => isModalOpen.set(false)}
 	transition:fade
 >
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		class="bg-slate-500 text-black rounded-md px-8 py-10 max-w-lg opacity-75 relative"
 		on:click|stopPropagation

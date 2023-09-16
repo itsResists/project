@@ -73,7 +73,10 @@ export const actions: Actions = {
 					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-				return { success: false };
+				return {
+					success: false,
+					results: energySpent2
+				};
 			} else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) {
 				//! If the energy result is less than the energy cap, grant max energy.
 				const data = {
@@ -149,7 +152,10 @@ export const actions: Actions = {
 					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-				return { success: false };
+				return {
+					success: false,
+					results: energySpent2
+				};
 			} else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) {
 				//! If the energy result is less than the energy cap, grant max energy.
 				const data = {
@@ -228,7 +234,10 @@ export const actions: Actions = {
 					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-				return { success: false };
+				return {
+					success: false,
+					results: energySpent2
+				};
 			} else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) {
 				//! If the energy result is less than the energy cap, grant max energy.
 				const data = {
@@ -307,7 +316,10 @@ export const actions: Actions = {
 					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-				return { success: false };
+				return {
+					success: false,
+					results: energySpent2
+				};
 			} else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) {
 				//! If the energy result is less than the energy cap, grant max energy.
 				const data = {
@@ -386,7 +398,10 @@ export const actions: Actions = {
 					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-				return { success: false };
+				return {
+					success: false,
+					results: energySpent2
+				};
 			} else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) {
 				//! If the energy result is less than the energy cap, grant max energy.
 				const data = {
@@ -467,7 +482,10 @@ export const actions: Actions = {
 					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-				return { success: false };
+				return {
+					success: false,
+					results: energySpent2
+				};
 			} else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) {
 				//! If the energy result is less than the energy cap, grant max energy.
 				const data = {
@@ -548,7 +566,10 @@ export const actions: Actions = {
 					experience: newExperience
 				};
 				await locals.pb.collection('users').update(user?.id, data);
-				return { success: false };
+				return {
+					success: false,
+					results: energySpent2
+				};
 			} else if (oldMaxEnergy.maxEnergy + energyGain <= energyCap) {
 				//! If the energy result is less than the energy cap, grant max energy.
 				const data = {
