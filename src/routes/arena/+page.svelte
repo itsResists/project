@@ -1,3 +1,3 @@
 <div>
-    <h1>Arena</h1>
+	<h1>Arena</h1>
 </div>

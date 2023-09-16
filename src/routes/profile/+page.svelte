@@ -6,9 +6,6 @@
 	import { profileStore } from '../../stores/ModalStore';
 </script>
 
-
-
-
 {#if $currentUser}
 	<div>
 		<p>Welcome back, {data.userData.username}!</p>
