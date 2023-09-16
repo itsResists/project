@@ -1,5 +1,8 @@
 
-
+<script>
+   
+    import { isModalOpen } from "../../stores/ModalStore";
+</script>
 
 <body>
     <h1>Jutsu Shop</h1>
@@ -13,33 +16,11 @@
 
 
 </div>
-
         <div class='grid grid-cols-4 border '>
 <div>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
+    {$isModalOpen}
+    <button class='btn p-2 m-4 h-12 w-28 flex justify-center' on:click={() => {isModalOpen.set(true)}}>Jutsu 1</button>
 
-</div>
-<div>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-</div>
-<div>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-</div>
-<div>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-    <p class='p-2 m-4 h-12 w-28 flex justify-center rounded-xl border-red-700 border'>Jutsu 1</p>
-</div>
 
         </div>
     </div>
