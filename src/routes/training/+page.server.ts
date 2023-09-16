@@ -11,8 +11,8 @@ export const load = async ({ locals }) => {
 
 //! Make stat cap variable based on current Rank.
 
-// const energyCap = Math.pow((rank+1), 2) * 10
-const energyCap = 1000;
+
+// const energyCap = 1000;
 
 export const actions: Actions = {
 	offense: async ({ locals, request }) => {
@@ -20,14 +20,17 @@ export const actions: Actions = {
 			const user = locals.user;
 			const rank = user?.rank;
 			const statCap = Math.pow(rank + 1, 2) * 10000;
+			const energyCap = Math.pow((rank + 1), 2) * 1000
 
 			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
 				energySpent: number;
 			};
 			const energySpent2 = energyData.energySpent;
-			const trainingAmount = (energySpent2 as unknown as number) * 1;
-			const energyGain = trainingAmount * 0.05;
+			// const trainingAmount = (energySpent2 as unknown as number) * 1;
+			// const energyGain = trainingAmount * 0.05;
+			const trainingAmount = (energySpent2 as unknown as number) * .5;
+			const energyGain = trainingAmount * 0.1;
 
 			//! Experience Gain
 			const oldExperience = await locals.pb
@@ -96,6 +99,7 @@ export const actions: Actions = {
 			const user = locals.user;
 			const rank = user?.rank;
 			const statCap = Math.pow(rank + 1, 2) * 10000;
+			const energyCap = Math.pow((rank + 1), 2) * 1000
 
 			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
@@ -174,6 +178,7 @@ export const actions: Actions = {
 			const user = locals.user;
 			const rank = user?.rank;
 			const statCap = Math.pow(rank + 1, 2) * 10000;
+			const energyCap = Math.pow((rank + 1), 2) * 1000
 
 			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
@@ -252,6 +257,7 @@ export const actions: Actions = {
 			const user = locals.user;
 			const rank = user?.rank;
 			const statCap = Math.pow(rank + 1, 2) * 10000;
+			const energyCap = Math.pow((rank + 1), 2) * 1000
 
 			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
@@ -330,6 +336,7 @@ export const actions: Actions = {
 			const user = locals.user;
 			const rank = user?.rank;
 			const statCap = Math.pow(rank + 1, 2) * 10000;
+			const energyCap = Math.pow((rank + 1), 2) * 1000
 
 			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
@@ -408,6 +415,7 @@ export const actions: Actions = {
 			const user = locals.user;
 			const rank = user?.rank;
 			const statCap = Math.pow(rank + 1, 2) * 10000;
+			const energyCap = Math.pow((rank + 1), 2) * 1000
 
 			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {
@@ -488,6 +496,7 @@ export const actions: Actions = {
 			const user = locals.user;
 			const rank = user?.rank;
 			const statCap = Math.pow(rank + 1, 2) * 10000;
+			const energyCap = Math.pow((rank + 1), 2) * 1000
 
 			//! Energy Information
 			const energyData = Object.fromEntries(await request.formData()) as unknown as {

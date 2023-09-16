@@ -45,8 +45,8 @@
 		<p class="text-green-600 text-lg font-semibold">You are at cap!</p>
 	{:else if form?.success === true}
 		<p class="text-green-600 text-lg font-semibold">
-			You have gained {form?.results} in the corresponding stat, {form?.results * 10} experience and
-			{form?.results * 0.05} total energy
+			You have gained {form?.results  * .5} in the corresponding stat, {form?.results * 10} experience and
+			{form?.results * 0.1} total energy
 		</p>
 	{:else if form?.success === false}
 		<p class="text-green-600 text-lg font-semibold">You have gained {form?.results * 10} stat</p>
