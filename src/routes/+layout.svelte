@@ -31,6 +31,12 @@
 						<a href="/shop">Shop</a>
 					</li>
 					<li>
+						<a href="/arena">Arena</a>
+					</li>
+					<li>
+						<a href="/ramen">Ramen</a>
+					</li>
+					<li>
 						<form
 							method="POST"
 							action="/logout"

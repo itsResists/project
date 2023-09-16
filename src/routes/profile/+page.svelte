@@ -2,7 +2,12 @@
 	import { currentUser, pb } from '$lib/pocketbase';
 	import { applyAction, enhance } from '$app/forms';
 	export let data;
+
+	import { profileStore } from '../../stores/ModalStore';
 </script>
+
+
+
 
 {#if $currentUser}
 	<div>
