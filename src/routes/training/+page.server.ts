@@ -30,7 +30,7 @@ export const actions: Actions = {
 			// const trainingAmount = (energySpent2 as unknown as number) * 1;
 			// const energyGain = trainingAmount * 0.05;
 			const trainingAmount = (energySpent2 as unknown as number) * .5;
-			const energyGain = trainingAmount * 0.1;
+			const energyGain = trainingAmount * 0.2;
 
 			//! Experience Gain
 			const oldExperience = await locals.pb
@@ -106,8 +106,8 @@ export const actions: Actions = {
 				energySpent: number;
 			};
 			const energySpent2 = energyData.energySpent;
-			const trainingAmount = (energySpent2 as unknown as number) * 1;
-			const energyGain = trainingAmount * 0.05;
+			const trainingAmount = (energySpent2 as unknown as number) * .5;
+			const energyGain = trainingAmount * 0.2;
 
 			//! Experience Gain
 			const oldExperience = await locals.pb
@@ -185,8 +185,8 @@ export const actions: Actions = {
 				energySpent: number;
 			};
 			const energySpent2 = energyData.energySpent;
-			const trainingAmount = (energySpent2 as unknown as number) * 1;
-			const energyGain = trainingAmount * 0.05;
+			const trainingAmount = (energySpent2 as unknown as number) * .5;
+			const energyGain = trainingAmount * 0.2;
 
 			//! Experience Gain
 			const oldExperience = await locals.pb
@@ -264,8 +264,8 @@ export const actions: Actions = {
 				energySpent: number;
 			};
 			const energySpent2 = energyData.energySpent;
-			const trainingAmount = (energySpent2 as unknown as number) * 1;
-			const energyGain = trainingAmount * 0.05;
+			const trainingAmount = (energySpent2 as unknown as number) * .5;
+			const energyGain = trainingAmount * 0.2;
 
 			//! Experience Gain
 			const oldExperience = await locals.pb
@@ -343,8 +343,8 @@ export const actions: Actions = {
 				energySpent: number;
 			};
 			const energySpent2 = energyData.energySpent;
-			const trainingAmount = (energySpent2 as unknown as number) * 1;
-			const energyGain = trainingAmount * 0.05;
+			const trainingAmount = (energySpent2 as unknown as number) * .5;
+			const energyGain = trainingAmount * 0.2;
 
 			//! Experience Gain
 			const oldExperience = await locals.pb
@@ -422,8 +422,8 @@ export const actions: Actions = {
 				energySpent: number;
 			};
 			const energySpent2 = energyData.energySpent;
-			const trainingAmount = (energySpent2 as unknown as number) * 1;
-			const energyGain = trainingAmount * 0.05;
+			const trainingAmount = (energySpent2 as unknown as number) * .5;
+			const energyGain = trainingAmount * 0.2;
 
 			//! Experience Gain
 			const oldExperience = await locals.pb
@@ -503,8 +503,8 @@ export const actions: Actions = {
 				energySpent: number;
 			};
 			const energySpent2 = energyData.energySpent;
-			const trainingAmount = (energySpent2 as unknown as number) * 1;
-			const energyGain = trainingAmount * 0.05;
+			const trainingAmount = (energySpent2 as unknown as number) * .5;
+			const energyGain = trainingAmount * 0.2;
 
 			//! Experience Gain
 			const oldExperience = await locals.pb
